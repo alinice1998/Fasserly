@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فَسِّرْلي - الباحث والمفسّر القرآني الذكي</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Tajawal:wght@400;500;700;800&family=Reem+Kufi:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>فَسِّرْلي</h1>
+                    <span class="logo-subtitle">الباحث والمفسّر القرآني</span>
+                </div>
+            </div>
+            
+            <!-- Quick Prompts Section -->
+            <div class="quick-prompts-container">
+                <h3><i class="fa-solid fa-compass"></i> محاور البحث السريع</h3>
+                <div class="quick-prompts-list">
+                    <button class="quick-prompt-card" data-prompt="ما هو سبب نزول سورة الكوثر؟">
+                        <i class="fa-solid fa-feather-pointed"></i>
+                        <span>سبب نزول سورة الكوثر</span>
+                    </button>
+                    <button class="quick-prompt-card" data-prompt="ما هو تفسير آية الكرسي المعتمد؟">
+                        <i class="fa-solid fa-scroll"></i>
+                        <span>تفسير آية الكرسي</span>
+                    </button>
+                    <button class="quick-prompt-card" data-prompt="ما هو إعراب (الحمدُ للهِ ربِّ العالمينَ)؟">
+                        <i class="fa-solid fa-pen-nib"></i>
+                        <span>إعراب صدر سورة الفاتحة</span>
+                    </button>
+                    <button class="quick-prompt-card" data-prompt="أعطني معلومات عامة وإحصائيات حول سورة الكهف.">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>معلومات وإحصاء سورة الكهف</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="sidebar-actions">
+                <button id="open-settings-btn" class="sidebar-btn primary-btn">
+                    <i class="fa-solid fa-key"></i> إعدادات الاتصال والمفتاح
+                </button>
+                <button id="clear-chat-btn" class="sidebar-btn secondary-btn">
+                    <i class="fa-solid fa-trash-can"></i> مسح سجل المحادثة
+                </button>
+            </div>
+
+            <!-- Status Panel -->
+            <div class="status-panel">
+                <div class="status-item">
+                    <span class="status-dot" id="mcp-status-dot"></span>
+                    <span id="mcp-status-text">جاري الاتصال بخادم التفسير...</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <header class="chat-header">
+                <div class="header-title-container">
+                    <h2>بوابة التفسير والعلوم القرآنية</h2>
+                    <p>إجابات موثقة بالكامل ومستخرجة من أمهات كتب التفسير ومصنفات اللغة</p>
+                </div>
+            </header>
+
+            <div class="chat-container" id="chat-container">
+                <!-- Welcome Message -->
+                <div class="message ai-message welcome-msg">
+                    <div class="avatar"><i class="fa-solid fa-mosque"></i></div>
+                    <div class="content">
+                        <h3>أهلاً بك في تطبيق <strong>فَسِّرْلي</strong></h3>
+                        <p>
+                            أنا مرشدك الرقمي الموثق للبحث في القرآن الكريم وتفسيره وإعرابه. أستعين بمجموعة واسعة من أدوات العلوم القرآنية المتخصصة لتوفير إجابات دقيقة ومسندة تخلو تماماً من الهلوسة العلمية.
+                        </p>
+                        <p>
+                            <strong>بإمكاني مساعدتك في:</strong>
+                        </p>
+                        <ul class="welcome-features">
+                            <li><i class="fa-solid fa-check"></i> استخراج التفسير المعتمد لأي آية من مختلف التفاسير.</li>
+                            <li><i class="fa-solid fa-check"></i> بيان أسباب النزول الموثقة وصحة الأثر الوارد فيها.</li>
+                            <li><i class="fa-solid fa-check"></i> التحليل النحوي وإعراب كلمات وجمل الآيات الكريمة.</li>
+                            <li><i class="fa-solid fa-check"></i> البحث اللغوي في معاني جذور الكلمات القرآنية وتكرارها.</li>
+                        </ul>
+                        <div class="welcome-alert" id="welcome-api-alert">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>يرجى إدخال مفتاح الاتصال <strong>OpenRouter API Key</strong> عبر زر إعدادات الاتصال في القائمة الجانبية للبدء.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <textarea id="user-input" placeholder="اكتب آية، سورة، أو سؤالاً في التفسير والعلوم القرآنية..." rows="1" disabled></textarea>
+                    <button id="send-btn" disabled><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal (Popup) -->
+    <div id="settings-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-sliders"></i> إعدادات الاتصال والنموذج</h3>
+                <button id="close-settings-btn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="api-key">مفتاح OpenRouter API Key</label>
+                    <div class="api-key-input-wrapper">
+                        <input type="password" id="api-key" placeholder="sk-or-v1-...">
+                        <button id="toggle-api-key-btn" type="button" title="إظهار/إخفاء المفتاح">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <small>المفتاح آمن ويحفظ محلياً في متصفحك فقط للاتصال بالذكاء الاصطناعي.</small>
+                </div>
+                <div class="input-group">
+                    <label for="model-select">نموذج الذكاء الاصطناعي (Model)</label>
+                    <select id="model-select">
+                        <option value="google/gemini-3.1-flash-lite" selected>Gemini 3.1 Flash Lite (الافتراضي)</option>
+                        <option value="google/gemini-3.5-flash">Gemini 3.5 Flash</option>
+                        <option value="google/gemini-3-flash-preview">Gemini 3 Flash Preview</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-settings-btn" class="primary-btn full-width">حفظ الإعدادات وبدء الاتصال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
