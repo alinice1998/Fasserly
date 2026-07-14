@@ -2,7 +2,7 @@ class TinyMCPClient {
     constructor(url) {
         this.originalUrl = url;
         this.proxy = (u) => {
-            return "proxy.php?url=" + encodeURIComponent(u);
+            return u;
         };
         this.url = this.proxy(url);
         this.messageId = 1;

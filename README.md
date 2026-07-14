@@ -36,8 +36,7 @@
 graph TD
     User([المستخدم]) -->|تفاعل| Frontend[الواجهة الأمامية HTML/CSS/JS]
     Frontend -->|طلبات المحادثة والذكاء الاصطناعي| OpenRouter[OpenRouter API]
-    Frontend -->|طلبات البيانات القرآنية / تجاوز CORS| PHPProxy[الوسيط proxy.php]
-    PHPProxy -->|اتصال محلي SSE| PythonMCP[خادم Tafsir MCP المحلّي]
+    Frontend -->|اتصال محلي مباشر SSE| PythonMCP[خادم Tafsir MCP المحلّي]
     PythonMCP -->|استعلام| DB[(قاعدة البيانات القرآنية والتفاسير)]
 ```
 
@@ -45,8 +44,8 @@ graph TD
 
 ### 🚀 متطلبات التشغيل (Prerequisites)
 1. **بايثون (Python 3.8 أو أحدث):** لتشغيل خادم Tafsir MCP.
-2. **بيئة خادم ويب محلي يدعم PHP:** مثل **XAMPP** أو **WampServer** أو خادم PHP المدمج.
-3. **مفتاح اتصال OpenRouter API Key:** للاتصال بنماذج الذكاء الاصطناعي (مثل Gemini 3.5 Flash).
+2. **متصفح ويب حديث:** لفتح واجهة المستخدم مباشرة (لا يشترط وجود خادم ويب محلي كـ XAMPP).
+3. **مفتاح اتصال OpenRouter API Key:** للاتصال بنماذج الذكاء الاصطناعي (مثل Gemini 3.1 Pro).
 
 ---
 
@@ -72,13 +71,10 @@ graph TD
   python run_tafsir.py
   ```
 
-#### الخطوة 2: تهيئة الواجهة الأمامية ووسيط PHP
-1. قم بنسخ مجلد المشروع بالكامل إلى مجلد الـ root الخاص بخادم الويب المحلي (مثال في XAMPP: `C:\xampp\htdocs\Fasserly`).
-2. تأكد من تشغيل Apache من لوحة تحكم XAMPP.
-3. افتح متصفح الويب واذهب إلى العنوان التالي:
-   ```text
-   http://localhost/Fasserly/index.html
-   ```
+#### الخطوة 2: تشغيل الواجهة الأمامية
+بفضل التعديلات المعمارية الجديدة والاستغناء عن XAMPP، يمكنك تشغيل الواجهة بأبسط الطرق:
+1. ببساطة افتح ملف `index.html` في متصفح الويب المفضل لديك بالضغط المزدوج عليه.
+2. أو يمكنك استخدام إضافة (Live Server) في VS Code، أو تشغيل أي خادم HTTP بسيط جداً.
 
 #### الخطوة 3: ربط الذكاء الاصطناعي وبدء الاستخدام
 1. عند فتح التطبيق، اضغط على زر **"إعدادات الاتصال والمفتاح"** في القائمة الجانبية.
@@ -93,8 +89,7 @@ graph TD
 * `index.html`: هيكل واجهة المستخدم والتنسيقات الهيكلية.
 * `styles.css`: تنسيقات الواجهة ونظام الألوان الإسلامي والمؤثرات البصرية.
 * `app.js`: منطق التحكم، إدارة المحادثة، محاكاة بروتوكول MCP للمتصفح، والتواصل مع OpenRouter.
-* `proxy.php`: خادم وسيط لحل مشكلة CORS ومرور بيانات SSE بشكل سلس مع XAMPP.
-* `run_tafsir.py`: الكود المشغل لخادم بايثون Tafsir MCP.
+* `run_tafsir.py`: الكود المشغل لخادم بايثون Tafsir MCP (مزود بـ CORS لتسهيل الاتصال).
 * `start_server.bat`: ملف دفعي لتثبيت وتشغيل خادم بايثون في بيئة ويندوز بضغطة زر.
 * `requirements.txt`: الحزم البرمجية المطلوبة لخادم بايثون.
 * `.gitignore`: قائمة بالملفات المؤقتة والملفات غير المرغوب في تتبعها برمجياً.
@@ -135,13 +130,10 @@ The repository includes a batch script to automate server setup.
   python run_tafsir.py
   ```
 
-#### Step 2: Host the Frontend
-1. Move the project folder to your local server's root directory (e.g., `C:\xampp\htdocs\Fasserly` for XAMPP).
-2. Start the Apache server from the XAMPP control panel.
-3. Open your browser and navigate to:
-   ```text
-   http://localhost/Fasserly/index.html
-   ```
+#### Step 2: Open the Frontend
+1. Since the app communicates directly with the Python server via CORS, you no longer need XAMPP or Apache.
+2. Simply double-click `index.html` to open it in your browser.
+3. Alternatively, you can use any simple HTTP server (like VS Code Live Server).
 
 #### Step 3: Configure settings
 1. Click the **"إعدادات الاتصال والمفتاح"** (Connection & Key Settings) button on the sidebar.
@@ -156,8 +148,7 @@ The repository includes a batch script to automate server setup.
 * `index.html`: The markup of the chat dashboard.
 * `styles.css`: Custom Islamic-themed stylesheet.
 * `app.js`: Main frontend logic, SSE handling, tiny MCP client, and OpenRouter api client.
-* `proxy.php`: CORS proxy script to bypass browser restrictions.
-* `run_tafsir.py`: Python script launching the local Tafsir MCP server.
+* `run_tafsir.py`: Python script launching the local Tafsir MCP server (with built-in CORS).
 * `start_server.bat`: Windows batch script for automated environment setup.
 * `requirements.txt`: Python package requirements.
 * `.gitignore`: Excluded temporary and system files from git.
