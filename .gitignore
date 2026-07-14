@@ -48,6 +48,9 @@ Thumbs.db
 
 # Databases & Cache (just in case they are generated locally)
 *.db
+!quran.db
 *.sqlite
 *.log
 *.tmp
+*.db-shm
+*.db-wal

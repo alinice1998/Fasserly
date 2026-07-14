@@ -17,7 +17,11 @@ echo [1/3] Installing Tafsir MCP and dependencies...
 py -m pip install tafsir-mcp uvicorn >nul
 
 echo [2/3] Creating server script...
-echo from tafsir.server import mcp > run_tafsir.py
+echo import os > run_tafsir.py
+echo from pathlib import Path >> run_tafsir.py
+echo db_path = Path(__file__).parent.resolve() / "quran.db" >> run_tafsir.py
+echo os.environ["TAFSIR_DB_PATH"] = str(db_path) >> run_tafsir.py
+echo from tafsir.server import mcp >> run_tafsir.py
 echo if __name__ == "__main__": >> run_tafsir.py
 echo     print("Starting Tafsir MCP on http://localhost:8000/sse") >> run_tafsir.py
 echo     mcp.settings.host = "127.0.0.1" >> run_tafsir.py
@@ -25,7 +29,8 @@ echo     mcp.settings.port = 8000 >> run_tafsir.py
 echo     mcp.run(transport="sse") >> run_tafsir.py
 
 echo [3/3] Starting the server! (Keep this window open)
-echo Note: The Quran database (~214MB) is only downloaded ONCE on the very first run.
-echo It will be saved securely and loaded instantly in the future.
+echo Note: Database is loaded locally from the project directory: %~dp0quran.db
+set TAFSIR_DB_PATH=%~dp0quran.db
 py run_tafsir.py
 pause
+
