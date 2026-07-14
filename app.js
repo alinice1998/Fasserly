@@ -26,7 +26,7 @@ class TinyMCPClient {
                     capabilities: {},
                     clientInfo: { name: "tafsir-web", version: "1.0.0" }
                 }).then(() => {
-                    this.send('notifications/initialized').then(resolve).catch(resolve);
+                    this.notify('notifications/initialized').then(resolve).catch(resolve);
                 }).catch(reject);
             });
             
@@ -71,6 +71,18 @@ class TinyMCPClient {
         return promise;
     }
     
+    async notify(method, params = {}) {
+        await fetch(this.postEndpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jsonrpc: "2.0",
+                method: method,
+                params: params
+            })
+        });
+    }
+
     async listTools() {
         return await this.send('tools/list');
     }
