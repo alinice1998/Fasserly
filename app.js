@@ -2,6 +2,9 @@ class TinyMCPClient {
     constructor(url) {
         this.originalUrl = url;
         this.proxy = (u) => {
+            if (window.location.protocol === 'https:' && typeof u === 'string') {
+                return u.replace(/^http:\/\/[^/]+/, window.location.origin);
+            }
             return u;
         };
         this.url = this.proxy(url);
@@ -254,8 +257,11 @@ async function initMCP() {
         statusDot.className = 'status-dot';
         statusText.textContent = 'جاري الاتصال بخادم التفسير...';
         
-        // الاتصال بخادم Tafsir MCP (النسخة المحلية)
-        const mcpUrl = 'http://localhost:8000/sse';
+        // تحديد مسار خادم Tafsir MCP تلقائياً (محلي أو عبر السيرفر الحي)
+        const isRemote = window.location.protocol.startsWith('http') && 
+                         window.location.hostname !== 'localhost' && 
+                         window.location.hostname !== '127.0.0.1';
+        const mcpUrl = isRemote ? `${window.location.origin}/sse` : 'http://localhost:8000/sse';
         mcpClient = new TinyMCPClient(mcpUrl);
         await mcpClient.connect();
         
@@ -284,7 +290,7 @@ async function initMCP() {
         mcpClient = null;
         statusDot.className = 'status-dot';
         statusText.textContent = 'فشل الاتصال بخادم التفسير';
-        showToast('تعذر الاتصال بخادم التفسير المحلي (Tafsir MCP).', 'error');
+        showToast('تعذر الاتصال بخادم التفسير (Tafsir MCP).', 'error');
     }
 }
 

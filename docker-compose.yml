@@ -1,0 +1,13 @@
+services:
+  mcp:
+    build: .
+    container_name: fasserly-mcp
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    external: true

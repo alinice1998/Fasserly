@@ -5,10 +5,12 @@ import uvicorn
 from pathlib import Path
 from starlette.middleware.cors import CORSMiddleware
 
-db_path = Path(__file__).parent.resolve() / "quran.db"
+default_db = Path(__file__).parent.resolve() / "quran.db"
+db_path = Path(os.environ.get("TAFSIR_DB_PATH", default_db))
 DB_URL = "https://github.com/alinice1998/Fasserly/releases/download/v1.0.0/quran.db"
 
 if not db_path.exists():
+    db_path.parent.mkdir(parents=True, exist_ok=True)
     print(f"\n[INFO] Database not found locally.")
     print(f"Downloading from: {DB_URL}")
     print("This may take a few minutes depending on your internet connection...\n")
@@ -32,8 +34,10 @@ os.environ["TAFSIR_DB_PATH"] = str(db_path)
 from tafsir.server import mcp
 
 if __name__ == "__main__":
-    print("\nStarting Tafsir MCP on http://localhost:8000/sse with CORS")
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", "8000"))
+    print(f"\nStarting Tafsir MCP on http://{host}:{port}/sse with CORS")
     mcp.settings.transport_security = None
     app = mcp.sse_app()
     app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host=host, port=port)
