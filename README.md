@@ -45,24 +45,24 @@ graph TD
 ### 🚀 متطلبات التشغيل (Prerequisites)
 1. **بايثون (Python 3.8 أو أحدث):** لتشغيل خادم Tafsir MCP.
 2. **متصفح ويب حديث:** لفتح واجهة المستخدم مباشرة (لا يشترط وجود خادم ويب محلي كـ XAMPP).
-3. **مفتاح اتصال OpenRouter API Key:** للاتصال بنماذج الذكاء الاصطناعي (مثل Gemini 3.1 Pro).
+3. **مفتاح اتصال OpenRouter API Key:** للاتصال بنماذج الذكاء الاصطناعي (مثل Gemini 3.5 Flash Lite أو Gemini 3.8 Flash أو Gemini 4 Argon).
 
 ---
 
 ### 🛠️ طريقة التثبيت والتشغيل بالتفصيل
 
 #### الخطوة 1: تشغيل خادم التفسير المحلي (Tafsir MCP Server)
-يحتوي المشروع على ملف دفعي (`start_server.bat`) يقوم تلقائياً بتهيئة الخادم وتنزيل الاعتمادات وقاعدة البيانات.
+يحتوي المشروع على ملف دفعي (`start_server.bat`) يقوم تلقائيًا بتهيئة الخادم وتنزيل الاعتمادات وقاعدة البيانات.
 
 * **باستخدام ملف bat (ويندوز):**
   قم بالنقر المزدوج على ملف `start_server.bat` وسيقوم بالآتي:
   1. التحقق من وجود بايثون.
   2. تثبيت مكتبة `tafsir-mcp` ومستلزماتها.
-  3. تنزيل قاعدة البيانات القرآنية (بحجم ~214MB تقريباً، وتُنزّل لمرة واحدة فقط).
+  3. تنزيل قاعدة البيانات القرآنية (بحجم ~214MB تقريبًا، وتُنزّل لمرة واحدة فقط).
   4. تشغيل خادم MCP المحلي على المنفذ `http://localhost:8000/sse`.
 
 * **الطريقة اليدوية (عبر الطرفية):**
-  إذا كنت تستخدم نظام تشغيل آخر أو تفضل العمل يدوياً:
+  إذا كنت تستخدم نظام تشغيل آخر أو تفضل العمل يدويًا:
   ```bash
   # 1. تثبيت الاعتمادات
   pip install -r requirements.txt
@@ -74,12 +74,12 @@ graph TD
 #### الخطوة 2: تشغيل الواجهة الأمامية
 بفضل التعديلات المعمارية الجديدة والاستغناء عن XAMPP، يمكنك تشغيل الواجهة بأبسط الطرق:
 1. ببساطة افتح ملف `index.html` في متصفح الويب المفضل لديك بالضغط المزدوج عليه.
-2. أو يمكنك استخدام إضافة (Live Server) في VS Code، أو تشغيل أي خادم HTTP بسيط جداً.
+2. أو يمكنك استخدام إضافة (Live Server) في VS Code، أو تشغيل أي خادم HTTP بسيط جدًا.
 
 #### الخطوة 3: ربط الذكاء الاصطناعي وبدء الاستخدام
 1. عند فتح التطبيق، اضغط على زر **"إعدادات الاتصال والمفتاح"** في القائمة الجانبية.
 2. أدخل مفتاح **OpenRouter API Key** الخاص بك.
-3. اختر النموذج المفضل (مثل `Gemini 3.5 Flash` أو `Gemini 3.1 Flash Lite`).
+3. اختر النموذج المفضل (مثل `Gemini 3.5 Flash Lite` أو `Gemini 3.8 Flash` أو `Gemini 4 Argon`).
 4. اضغط على **"حفظ الإعدادات وبدء الاتصال"**.
 5. ستلاحظ تحول نقطة الحالة بالأسفل إلى اللون الأخضر لتؤكد الاتصال بنجاح. ابدأ الآن في طرح أسئلتك القرآنية!
 
@@ -138,7 +138,7 @@ The repository includes a batch script to automate server setup.
 #### Step 3: Configure settings
 1. Click the **"إعدادات الاتصال والمفتاح"** (Connection & Key Settings) button on the sidebar.
 2. Provide your **OpenRouter API Key**.
-3. Select your preferred LLM model (e.g., Gemini 3.5 Flash).
+3. Select your preferred LLM model (e.g., Gemini 3.5 Flash Lite, Gemini 3.8 Flash, or Gemini 4 Argon).
 4. Click **"حفظ الإعدادات وبدء الاتصال"** (Save & Connect).
 5. The status indicator will turn green, indicating the system is ready for queries!
 
