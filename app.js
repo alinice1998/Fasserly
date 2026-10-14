@@ -109,6 +109,14 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 const toastEl = document.getElementById('toast');
 
+// Navigation & Sidebar Drawer Elements
+const sidebar = document.getElementById('sidebar');
+const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+const headerSettingsBtn = document.getElementById('header-settings-btn');
+const headerClearBtn = document.getElementById('header-clear-btn');
+
 // Modal Elements
 const settingsModal = document.getElementById('settings-modal');
 const openSettingsBtn = document.getElementById('open-settings-btn');
@@ -582,8 +590,40 @@ async function handleSend() {
     }
 }
 
+// Sidebar Drawer Functions (Mobile)
+function openSidebar() {
+    if (sidebar) sidebar.classList.add('open');
+    if (sidebarOverlay) sidebarOverlay.classList.add('active');
+}
+
+function closeSidebar() {
+    if (sidebar) sidebar.classList.remove('open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+}
+
+if (sidebarToggleBtn) {
+    sidebarToggleBtn.addEventListener('click', openSidebar);
+}
+if (closeSidebarBtn) {
+    closeSidebarBtn.addEventListener('click', closeSidebar);
+}
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener('click', closeSidebar);
+}
+if (headerSettingsBtn) {
+    headerSettingsBtn.addEventListener('click', openModal);
+}
+if (headerClearBtn) {
+    headerClearBtn.addEventListener('click', () => {
+        clearChatBtn.click();
+    });
+}
+
 // Event Listeners for Modal Settings
-openSettingsBtn.addEventListener('click', openModal);
+openSettingsBtn.addEventListener('click', () => {
+    closeSidebar();
+    openModal();
+});
 closeSettingsBtn.addEventListener('click', closeModal);
 
 settingsModal.addEventListener('click', (e) => {
@@ -646,6 +686,7 @@ saveBtn.addEventListener('click', () => {
 
 // Clear Chat Log
 clearChatBtn.addEventListener('click', () => {
+    closeSidebar();
     if (confirm('هل تود بالتأكيد تفريغ المحادثة الحالية؟')) {
         messages = [messages[0]]; // Reset messages to initial system instruction
         
@@ -665,6 +706,7 @@ clearChatBtn.addEventListener('click', () => {
 const quickPromptCards = document.querySelectorAll('.quick-prompt-card');
 quickPromptCards.forEach(card => {
     card.addEventListener('click', () => {
+        closeSidebar();
         const text = card.getAttribute('data-prompt');
         if (text) {
             userInput.value = text;

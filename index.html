@@ -14,16 +14,24 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- Sidebar Overlay (for Mobile Drawer) -->
+        <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
         <!-- Sidebar / Navigation -->
-        <aside class="sidebar">
-            <div class="logo-container">
-                <div class="logo-icon">
-                    <i class="fa-solid fa-book-open"></i>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top-bar">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-book-open"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>فَسِّرْلي</h1>
+                        <span class="logo-subtitle">الباحث والمفسّر القرآني</span>
+                    </div>
                 </div>
-                <div class="logo-text">
-                    <h1>فَسِّرْلي</h1>
-                    <span class="logo-subtitle">الباحث والمفسّر القرآني</span>
-                </div>
+                <button id="close-sidebar-btn" class="sidebar-close-btn" type="button" aria-label="إغلاق القائمة">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
             
             <!-- Quick Prompts Section -->
@@ -51,10 +59,10 @@
 
             <!-- Actions -->
             <div class="sidebar-actions">
-                <button id="open-settings-btn" class="sidebar-btn primary-btn">
-                    <i class="fa-solid fa-key"></i> إعدادات الاتصال والمفتاح
+                <button id="open-settings-btn" class="sidebar-btn primary-btn" type="button">
+                    <i class="fa-solid fa-sliders"></i> إعدادات الاتصال والنموذج
                 </button>
-                <button id="clear-chat-btn" class="sidebar-btn secondary-btn">
+                <button id="clear-chat-btn" class="sidebar-btn secondary-btn" type="button">
                     <i class="fa-solid fa-trash-can"></i> مسح سجل المحادثة
                 </button>
             </div>
@@ -71,9 +79,22 @@
         <!-- Main Chat Area -->
         <main class="chat-main">
             <header class="chat-header">
-                <div class="header-title-container">
-                    <h2>بوابة التفسير والعلوم القرآنية</h2>
-                    <p>إجابات موثقة بالكامل ومستخرجة من أمهات كتب التفسير ومصنفات اللغة</p>
+                <div class="header-right">
+                    <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" type="button" aria-label="فتح القائمة ومحاور البحث" title="القائمة ومحاور البحث">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="header-title-container">
+                        <h2>بوابة التفسير والعلوم القرآنية</h2>
+                        <p>إجابات موثقة بالكامل ومستخرجة من أمهات كتب التفسير ومصنفات اللغة</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="header-settings-btn" class="header-action-btn" type="button" title="إعدادات الاتصال والنموذج">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+                    <button id="header-clear-btn" class="header-action-btn" type="button" title="مسح سجل المحادثة">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
                 </div>
             </header>
 
