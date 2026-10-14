@@ -126,11 +126,11 @@ const PROVIDERS = {
         keyPlaceholder: 'AIzaSy...',
         keyHint: 'المفتاح آمن ويحفظ محليًا في متصفحك فقط للاتصال بالذكاء الاصطناعي. يمكنك استخراجه مجانًا من aistudio.google.com',
         endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-        defaultModel: 'gemini-2.5-flash',
+        defaultModel: 'gemini-3.5-flash-lite',
         models: [
-            { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash (الافتراضي - فائق السرعة والأحدث)' },
-            { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro (النموذج المتقدم للتفكير والتحليل العميق)' },
-            { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash (سريع ومستقر)' }
+            { id: 'gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash Lite (الافتراضي - فائق السرعة)' },
+            { id: 'gemini-3.8-flash', name: 'Gemini 3.8 Flash (متوازن ومتقدم)' },
+            { id: 'gemini-4-argon', name: 'Gemini 4 Argon (النموذج الأقوى والأعلى ذكاءً)' }
         ]
     },
     openrouter: {

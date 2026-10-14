@@ -24,8 +24,8 @@
 * **التحليل النحوي والإعراب:** تقديم إعراب تفصيلي لبنية الكلمات والجمل القرآنية.
 * **إحصاءات الجذور اللغوية:** البحث اللغوي المتعمق عن جذور الكلمات وتكرارها في القرآن.
 * **مرونة اختيار مزود الذكاء الاصطناعي (Multi-Provider Support):**
-  - **Google AI Studio**: اتصال مباشر وسريع ومجاني بأحدث نماذج Gemini الرسمية (`gemini-2.5-flash`، `gemini-2.5-pro`، `gemini-1.5-flash`).
-  - **OpenRouter**: بوابة شاملة تدعم نماذج Gemini الأحدث (`Gemini 3.5 Flash Lite`، `Gemini 3.8 Flash`، `Gemini 4 Argon`).
+  - **Google AI Studio**: اتصال مباشر وسريع ومجاني بأحدث نماذج Gemini الرسمية (`Gemini 3.5 Flash Lite`، `Gemini 3.8 Flash`، `Gemini 4 Argon`).
+  - **OpenRouter**: بوابة شاملة تدعم نفس النماذج المعتمدة (`Gemini 3.5 Flash Lite`، `Gemini 3.8 Flash`، `Gemini 4 Argon`).
 * **واجهة مستخدم إسلامية راقية:** تصميم عصري جذاب يعتمد على تدرجات لونية متناغمة (ألوان إسلامية ذهبية وخضراء)، تأثيرات الزجاج (Glassmorphism)، وخطوط عربية كلاسيكية جميلة (Amiri, Tajawal, Reem Kufi).
 * **إدارة الاتصال الآمن:** إدخال مفتاح المزود المفضل وحفظه محليًا بأمان تام في متصفحك (`localStorage`).
 
@@ -84,7 +84,7 @@ graph TD
 #### الخطوة 3: ربط الذكاء الاصطناعي وبدء الاستخدام
 1. عند فتح التطبيق، اضغط على زر **"إعدادات الاتصال والمفتاح"** في القائمة الجانبية.
 2. اختر **مزود الخدمة** المفضل لديك:
-   - **Google AI Studio**: أدخل مفتاحك المجاني (`AIza...`)، واختر أحد النماذج المعتمدة (`Gemini 2.5 Flash` الافتراضي، أو `Gemini 2.5 Pro`، أو `Gemini 1.5 Flash`).
+   - **Google AI Studio**: أدخل مفتاحك المجاني (`AIza...`)، واختر أحد النماذج المعتمدة (`Gemini 3.5 Flash Lite` الافتراضي، أو `Gemini 3.8 Flash`، أو `Gemini 4 Argon`).
    - **OpenRouter**: أدخل مفتاحك (`sk-or-v1-...`)، واختر نموذجك المفضل (`Gemini 3.5 Flash Lite` الافتراضي، أو `Gemini 3.8 Flash`، أو `Gemini 4 Argon`).
 3. اضغط على **"حفظ الإعدادات وبدء الاتصال"**.
 4. ستلاحظ تحول نقطة الحالة بالأسفل إلى اللون الأخضر لتؤكد الاتصال بنجاح. ابدأ الآن في طرح أسئلتك القرآنية!
@@ -115,8 +115,8 @@ graph TD
 * **Grammatical Parsing & Syntax:** Access detailed Arabic grammar (I'rab) and morphology analysis.
 * **Word Roots Statistics:** Search and display occurrences and statistical weights of root words.
 * **Multi-Provider AI Flexibility:**
-  - **Google AI Studio**: Direct, fast, and free API integration with the latest official Gemini models (`gemini-2.5-flash`, `gemini-2.5-pro`, `gemini-1.5-flash`).
-  - **OpenRouter**: Universal hub supporting top models (`Gemini 3.5 Flash Lite`, `Gemini 3.8 Flash`, `Gemini 4 Argon`).
+  - **Google AI Studio**: Direct, fast, and free API integration with the latest official Gemini models (`Gemini 3.5 Flash Lite`, `Gemini 3.8 Flash`, `Gemini 4 Argon`).
+  - **OpenRouter**: Universal hub supporting the same models (`Gemini 3.5 Flash Lite`, `Gemini 3.8 Flash`, `Gemini 4 Argon`).
 * **Premium Islamic Aesthetic:** Elegant dark/light glassmorphic UI, tailored with custom golden and emerald gradients, smooth animations, and classical Arabic typography (Amiri, Tajawal, Reem Kufi).
 * **Safe Local Settings:** Save your chosen provider keys locally in the browser's `localStorage` securely.
 
@@ -147,8 +147,8 @@ The repository includes a batch script to automate server setup.
 #### Step 3: Configure settings
 1. Click the **"إعدادات الاتصال والمفتاح"** (Connection & Key Settings) button on the sidebar.
 2. Choose your preferred **AI Provider**:
-   - **Google AI Studio**: Paste your free Gemini API Key (`AIza...`) and select your model.
-   - **OpenRouter**: Paste your OpenRouter API Key (`sk-or-v1-...`) and select your model.
+   - **Google AI Studio**: Paste your free Gemini API Key (`AIza...`) and select your model (`Gemini 3.5 Flash Lite`, `Gemini 3.8 Flash`, or `Gemini 4 Argon`).
+   - **OpenRouter**: Paste your OpenRouter API Key (`sk-or-v1-...`) and select your model (`Gemini 3.5 Flash Lite`, `Gemini 3.8 Flash`, or `Gemini 4 Argon`).
 3. Click **"حفظ الإعدادات وبدء الاتصال"** (Save & Connect).
 4. The status indicator will turn green, indicating the system is ready for queries!
 
