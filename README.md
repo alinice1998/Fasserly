@@ -16,15 +16,18 @@
 
 ## العربية
 
-**فَسِّرْلي** هو تطبيق ويب متكامل ومصمم بجماليات إسلامية راقية، يدمج الذكاء الاصطناعي مع أدوات العلوم القرآنية الموثقة. يعتمد التطبيق على بروتوكول سياق النموذج (**Model Context Protocol - MCP**) للربط بين نماذج الذكاء الاصطناعي (عبر OpenRouter) وبين قاعدة بيانات تفاسير القرآن الكريم وإعرابه اللغوي وأسباب النزول المعتمدة، لمنع الهلوسة العلمية وتقديم إجابات مسندة تماماً.
+**فَسِّرْلي** هو تطبيق ويب متكامل ومصمم بجماليات إسلامية راقية، يدمج الذكاء الاصطناعي مع أدوات العلوم القرآنية الموثقة. يعتمد التطبيق على بروتوكول سياق النموذج (**Model Context Protocol - MCP**) للربط بين نماذج الذكاء الاصطناعي (مع دعم مرن لمزودين: **Google AI Studio** المباشر و**OpenRouter**) وبين قاعدة بيانات تفاسير القرآن الكريم وإعرابه اللغوي وأسباب النزول المعتمدة، لمنع الهلوسة العلمية وتقديم إجابات مسندة تمامًا.
 
 ### 🌟 الميزات الرئيسية
 * **البحث والتفسير المعتمد:** استخراج تفاسير الآيات من أمهات كتب التفسير (تفسير ابن كثير، الجلالين، الطبري، إلخ).
 * **أسباب النزول:** معرفة أسباب نزول الآيات والسور مع بيان درجة صحة الأثر الوارد.
 * **التحليل النحوي والإعراب:** تقديم إعراب تفصيلي لبنية الكلمات والجمل القرآنية.
 * **إحصاءات الجذور اللغوية:** البحث اللغوي المتعمق عن جذور الكلمات وتكرارها في القرآن.
+* **مرونة اختيار مزود الذكاء الاصطناعي (Multi-Provider Support):**
+  - **Google AI Studio**: اتصال مباشر وسريع ومجاني بأحدث نماذج Gemini الرسمية (`gemini-2.5-flash`، `gemini-2.5-pro`، `gemini-1.5-flash`).
+  - **OpenRouter**: بوابة شاملة تدعم نماذج Gemini الأحدث (`Gemini 3.5 Flash Lite`، `Gemini 3.8 Flash`، `Gemini 4 Argon`).
 * **واجهة مستخدم إسلامية راقية:** تصميم عصري جذاب يعتمد على تدرجات لونية متناغمة (ألوان إسلامية ذهبية وخضراء)، تأثيرات الزجاج (Glassmorphism)، وخطوط عربية كلاسيكية جميلة (Amiri, Tajawal, Reem Kufi).
-* **إدارة الاتصال الآمن:** إدخال مفتاح OpenRouter وتحديد النموذج وحفظها محلياً بأمان تام في المتصفح.
+* **إدارة الاتصال الآمن:** إدخال مفتاح المزود المفضل وحفظه محليًا بأمان تام في متصفحك (`localStorage`).
 
 ---
 
@@ -35,7 +38,9 @@
 ```mermaid
 graph TD
     User([المستخدم]) -->|تفاعل| Frontend[الواجهة الأمامية HTML/CSS/JS]
-    Frontend -->|طلبات المحادثة والذكاء الاصطناعي| OpenRouter[OpenRouter API]
+    Frontend -->|طلبات الذكاء الاصطناعي| Providers{اختيار المزود}
+    Providers -->|اتصال مباشر ومجاني| GoogleAI[Google AI Studio API]
+    Providers -->|بوابة متعددة النماذج| OpenRouter[OpenRouter API]
     Frontend -->|اتصال محلي مباشر SSE| PythonMCP[خادم Tafsir MCP المحلّي]
     PythonMCP -->|استعلام| DB[(قاعدة البيانات القرآنية والتفاسير)]
 ```
@@ -45,7 +50,7 @@ graph TD
 ### 🚀 متطلبات التشغيل (Prerequisites)
 1. **بايثون (Python 3.8 أو أحدث):** لتشغيل خادم Tafsir MCP.
 2. **متصفح ويب حديث:** لفتح واجهة المستخدم مباشرة (لا يشترط وجود خادم ويب محلي كـ XAMPP).
-3. **مفتاح اتصال OpenRouter API Key:** للاتصال بنماذج الذكاء الاصطناعي (مثل Gemini 3.5 Flash Lite أو Gemini 3.8 Flash أو Gemini 4 Argon).
+3. **مفتاح اتصال الذكاء الاصطناعي:** إما مفتاح مجاني من **Google AI Studio** (`aistudio.google.com`) أو مفتاح من **OpenRouter** (`openrouter.ai`).
 
 ---
 
@@ -78,17 +83,18 @@ graph TD
 
 #### الخطوة 3: ربط الذكاء الاصطناعي وبدء الاستخدام
 1. عند فتح التطبيق، اضغط على زر **"إعدادات الاتصال والمفتاح"** في القائمة الجانبية.
-2. أدخل مفتاح **OpenRouter API Key** الخاص بك.
-3. اختر النموذج المفضل (مثل `Gemini 3.5 Flash Lite` أو `Gemini 3.8 Flash` أو `Gemini 4 Argon`).
-4. اضغط على **"حفظ الإعدادات وبدء الاتصال"**.
-5. ستلاحظ تحول نقطة الحالة بالأسفل إلى اللون الأخضر لتؤكد الاتصال بنجاح. ابدأ الآن في طرح أسئلتك القرآنية!
+2. اختر **مزود الخدمة** المفضل لديك:
+   - **Google AI Studio**: أدخل مفتاحك المجاني (`AIza...`)، واختر أحد النماذج المعتمدة (`Gemini 2.5 Flash` الافتراضي، أو `Gemini 2.5 Pro`، أو `Gemini 1.5 Flash`).
+   - **OpenRouter**: أدخل مفتاحك (`sk-or-v1-...`)، واختر نموذجك المفضل (`Gemini 3.5 Flash Lite` الافتراضي، أو `Gemini 3.8 Flash`، أو `Gemini 4 Argon`).
+3. اضغط على **"حفظ الإعدادات وبدء الاتصال"**.
+4. ستلاحظ تحول نقطة الحالة بالأسفل إلى اللون الأخضر لتؤكد الاتصال بنجاح. ابدأ الآن في طرح أسئلتك القرآنية!
 
 ---
 
 ### 📂 ملفات المشروع (Project Structure)
-* `index.html`: هيكل واجهة المستخدم والتنسيقات الهيكلية.
+* `index.html`: هيكل واجهة المستخدم والتنسيقات الهيكلية ونوافذ الإعدادات.
 * `styles.css`: تنسيقات الواجهة ونظام الألوان الإسلامي والمؤثرات البصرية.
-* `app.js`: منطق التحكم، إدارة المحادثة، محاكاة بروتوكول MCP للمتصفح، والتواصل مع OpenRouter.
+* `app.js`: منطق التحكم، إدارة المحادثة، محاكاة بروتوكول MCP للمتصفح، والتواصل مع Google AI Studio وOpenRouter.
 * `run_tafsir.py`: الكود المشغل لخادم بايثون Tafsir MCP (مزود بـ CORS لتسهيل الاتصال).
 * `start_server.bat`: ملف دفعي لتثبيت وتشغيل خادم بايثون في بيئة ويندوز بضغطة زر.
 * `requirements.txt`: الحزم البرمجية المطلوبة لخادم بايثون.
@@ -101,15 +107,18 @@ graph TD
 
 ## English Version
 
-**Fasserly** is a beautifully crafted web application with a premium Islamic aesthetic, combining Generative AI with authenticated Quranic sciences. Leveraging the **Model Context Protocol (MCP)**, Fasserly bridges advanced LLMs (via OpenRouter) with local Quranic databases (tafsir, parsing, syntax, and reasons of revelation) to prevent AI hallucinations and provide verified references.
+**Fasserly** is a beautifully crafted web application with a premium Islamic aesthetic, combining Generative AI with authenticated Quranic sciences. Leveraging the **Model Context Protocol (MCP)**, Fasserly bridges advanced LLMs (supporting both direct **Google AI Studio** and **OpenRouter**) with local Quranic databases (tafsir, parsing, syntax, and reasons of revelation) to prevent AI hallucinations and provide verified references.
 
 ### 🌟 Key Features
 * **Verified Tafsir Lookup:** Fetch explanations from authoritative tafsirs (Ibn Kathir, Al-Jalalayn, Al-Tabari, etc.).
 * **Nuzool Reasons:** Explore reasons of revelation for verses with authentication metadata.
 * **Grammatical Parsing & Syntax:** Access detailed Arabic grammar (I'rab) and morphology analysis.
 * **Word Roots Statistics:** Search and display occurrences and statistical weights of root words.
+* **Multi-Provider AI Flexibility:**
+  - **Google AI Studio**: Direct, fast, and free API integration with the latest official Gemini models (`gemini-2.5-flash`, `gemini-2.5-pro`, `gemini-1.5-flash`).
+  - **OpenRouter**: Universal hub supporting top models (`Gemini 3.5 Flash Lite`, `Gemini 3.8 Flash`, `Gemini 4 Argon`).
 * **Premium Islamic Aesthetic:** Elegant dark/light glassmorphic UI, tailored with custom golden and emerald gradients, smooth animations, and classical Arabic typography (Amiri, Tajawal, Reem Kufi).
-* **Safe Local Settings:** Save OpenRouter API keys locally in the browser's `localStorage` securely.
+* **Safe Local Settings:** Save your chosen provider keys locally in the browser's `localStorage` securely.
 
 ---
 
@@ -137,17 +146,18 @@ The repository includes a batch script to automate server setup.
 
 #### Step 3: Configure settings
 1. Click the **"إعدادات الاتصال والمفتاح"** (Connection & Key Settings) button on the sidebar.
-2. Provide your **OpenRouter API Key**.
-3. Select your preferred LLM model (e.g., Gemini 3.5 Flash Lite, Gemini 3.8 Flash, or Gemini 4 Argon).
-4. Click **"حفظ الإعدادات وبدء الاتصال"** (Save & Connect).
-5. The status indicator will turn green, indicating the system is ready for queries!
+2. Choose your preferred **AI Provider**:
+   - **Google AI Studio**: Paste your free Gemini API Key (`AIza...`) and select your model.
+   - **OpenRouter**: Paste your OpenRouter API Key (`sk-or-v1-...`) and select your model.
+3. Click **"حفظ الإعدادات وبدء الاتصال"** (Save & Connect).
+4. The status indicator will turn green, indicating the system is ready for queries!
 
 ---
 
 ### 📂 Repository Contents
-* `index.html`: The markup of the chat dashboard.
+* `index.html`: The markup of the chat dashboard and settings modal.
 * `styles.css`: Custom Islamic-themed stylesheet.
-* `app.js`: Main frontend logic, SSE handling, tiny MCP client, and OpenRouter api client.
+* `app.js`: Main frontend logic, SSE handling, tiny MCP client, and multi-provider AI client (Google AI Studio & OpenRouter).
 * `run_tafsir.py`: Python script launching the local Tafsir MCP server (with built-in CORS).
 * `start_server.bat`: Windows batch script for automated environment setup.
 * `requirements.txt`: Python package requirements.

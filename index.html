@@ -97,7 +97,7 @@
                         </ul>
                         <div class="welcome-alert" id="welcome-api-alert">
                             <i class="fa-solid fa-circle-exclamation"></i>
-                            <span>يرجى إدخال مفتاح الاتصال <strong>OpenRouter API Key</strong> عبر زر إعدادات الاتصال في القائمة الجانبية للبدء.</span>
+                            <span>يرجى اختيار مزود الذكاء الاصطناعي (<strong>Google AI Studio</strong> أو <strong>OpenRouter</strong>) وإدخال مفتاح الاتصال عبر زر إعدادات الاتصال في القائمة الجانبية للبدء.</span>
                         </div>
                     </div>
                 </div>
@@ -122,21 +122,25 @@
             </div>
             <div class="modal-body">
                 <div class="input-group">
-                    <label for="api-key">مفتاح OpenRouter API Key</label>
+                    <label for="provider-select">مزود خدمة الذكاء الاصطناعي (AI Provider)</label>
+                    <select id="provider-select">
+                        <option value="google" selected>Google AI Studio (Gemini - مباشر ومجاني)</option>
+                        <option value="openrouter">OpenRouter (نماذج متعددة)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="api-key" id="api-key-label">مفتاح Google AI Studio API Key</label>
                     <div class="api-key-input-wrapper">
-                        <input type="password" id="api-key" placeholder="sk-or-v1-...">
+                        <input type="password" id="api-key" placeholder="AIzaSy...">
                         <button id="toggle-api-key-btn" type="button" title="إظهار/إخفاء المفتاح">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                     </div>
-                    <small>المفتاح آمن ويحفظ محليًا في متصفحك فقط للاتصال بالذكاء الاصطناعي.</small>
+                    <small id="api-key-hint">المفتاح آمن ويحفظ محليًا في متصفحك فقط للاتصال بالذكاء الاصطناعي. يمكنك استخراجه مجانًا من aistudio.google.com</small>
                 </div>
                 <div class="input-group">
                     <label for="model-select">نموذج الذكاء الاصطناعي (Model)</label>
                     <select id="model-select">
-                        <option value="google/gemini-3.5-flash-lite" selected>Gemini 3.5 Flash Lite (الافتراضي - فائق السرعة)</option>
-                        <option value="google/gemini-3.8-flash">Gemini 3.8 Flash (متوازن ومتقدم)</option>
-                        <option value="google/gemini-4-argon">Gemini 4 Argon (النموذج الأقوى والأعلى ذكاءً)</option>
                     </select>
                 </div>
             </div>

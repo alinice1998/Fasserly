@@ -96,6 +96,9 @@ class TinyMCPClient {
 }
 
 // DOM Elements
+const providerSelect = document.getElementById('provider-select');
+const apiKeyLabel = document.getElementById('api-key-label');
+const apiKeyHint = document.getElementById('api-key-hint');
 const apiKeyInput = document.getElementById('api-key');
 const modelSelect = document.getElementById('model-select');
 const saveBtn = document.getElementById('save-settings-btn');
@@ -113,18 +116,76 @@ const closeSettingsBtn = document.getElementById('close-settings-btn');
 const toggleApiKeyBtn = document.getElementById('toggle-api-key-btn');
 const clearChatBtn = document.getElementById('clear-chat-btn');
 
+// Providers & Models Configuration
+const PROVIDERS = {
+    google: {
+        id: 'google',
+        name: 'Google AI Studio',
+        label: 'Google AI Studio (Gemini - مباشر ومجاني)',
+        keyLabel: 'مفتاح Google AI Studio API Key',
+        keyPlaceholder: 'AIzaSy...',
+        keyHint: 'المفتاح آمن ويحفظ محليًا في متصفحك فقط للاتصال بالذكاء الاصطناعي. يمكنك استخراجه مجانًا من aistudio.google.com',
+        endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+        defaultModel: 'gemini-2.5-flash',
+        models: [
+            { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash (الافتراضي - فائق السرعة والأحدث)' },
+            { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro (النموذج المتقدم للتفكير والتحليل العميق)' },
+            { id: 'gemini-1.5-flash', name: 'Gemini 1.5 Flash (سريع ومستقر)' }
+        ]
+    },
+    openrouter: {
+        id: 'openrouter',
+        name: 'OpenRouter',
+        label: 'OpenRouter (نماذج متعددة)',
+        keyLabel: 'مفتاح OpenRouter API Key',
+        keyPlaceholder: 'sk-or-v1-...',
+        keyHint: 'المفتاح آمن ويحفظ محليًا في متصفحك فقط للاتصال بالذكاء الاصطناعي عبر منصة OpenRouter.',
+        endpoint: 'https://openrouter.ai/api/v1/chat/completions',
+        defaultModel: 'google/gemini-3.5-flash-lite',
+        models: [
+            { id: 'google/gemini-3.5-flash-lite', name: 'Gemini 3.5 Flash Lite (الافتراضي - فائق السرعة)' },
+            { id: 'google/gemini-3.8-flash', name: 'Gemini 3.8 Flash (متوازن ومتقدم)' },
+            { id: 'google/gemini-4-argon', name: 'Gemini 4 Argon (النموذج الأقوى والأعلى ذكاءً)' }
+        ]
+    }
+};
+
 // State
+let googleApiKey = localStorage.getItem('googleApiKey') || '';
 let openRouterApiKey = localStorage.getItem('openRouterApiKey') || '';
-const VALID_MODELS = [
-    'google/gemini-3.5-flash-lite',
-    'google/gemini-3.8-flash',
-    'google/gemini-4-argon'
-];
-let selectedModel = localStorage.getItem('selectedModel');
-if (!selectedModel || !VALID_MODELS.includes(selectedModel)) {
-    selectedModel = 'google/gemini-3.5-flash-lite';
-    localStorage.setItem('selectedModel', selectedModel);
+
+let selectedProvider = localStorage.getItem('fasserly_provider');
+if (!selectedProvider || !PROVIDERS[selectedProvider]) {
+    if (openRouterApiKey && !googleApiKey) {
+        selectedProvider = 'openrouter';
+    } else {
+        selectedProvider = 'google';
+    }
+    localStorage.setItem('fasserly_provider', selectedProvider);
 }
+
+let selectedGoogleModel = localStorage.getItem('selectedGoogleModel');
+const validGoogleModels = PROVIDERS.google.models.map(m => m.id);
+if (!selectedGoogleModel || !validGoogleModels.includes(selectedGoogleModel)) {
+    selectedGoogleModel = PROVIDERS.google.defaultModel;
+    localStorage.setItem('selectedGoogleModel', selectedGoogleModel);
+}
+
+let selectedOpenRouterModel = localStorage.getItem('selectedOpenRouterModel') || localStorage.getItem('selectedModel');
+const validOpenRouterModels = PROVIDERS.openrouter.models.map(m => m.id);
+if (!selectedOpenRouterModel || !validOpenRouterModels.includes(selectedOpenRouterModel)) {
+    selectedOpenRouterModel = PROVIDERS.openrouter.defaultModel;
+    localStorage.setItem('selectedOpenRouterModel', selectedOpenRouterModel);
+}
+
+function getActiveApiKey() {
+    return selectedProvider === 'google' ? googleApiKey : openRouterApiKey;
+}
+
+function getActiveModel() {
+    return selectedProvider === 'google' ? selectedGoogleModel : selectedOpenRouterModel;
+}
+
 let mcpClient = null;
 let mcpTools = [];
 let messages = [
@@ -149,13 +210,42 @@ let messages = [
     }
 ];
 
+// UI Synchronization for Provider
+function renderProviderSettings(providerKey) {
+    const config = PROVIDERS[providerKey] || PROVIDERS.google;
+    if (apiKeyLabel) apiKeyLabel.textContent = config.keyLabel;
+    if (apiKeyInput) {
+        apiKeyInput.placeholder = config.keyPlaceholder;
+        apiKeyInput.value = (providerKey === 'google' ? googleApiKey : openRouterApiKey);
+    }
+    if (apiKeyHint) apiKeyHint.textContent = config.keyHint;
+    
+    if (modelSelect) {
+        modelSelect.innerHTML = '';
+        const currentModel = (providerKey === 'google' ? selectedGoogleModel : selectedOpenRouterModel);
+        config.models.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.id;
+            opt.textContent = m.name;
+            if (m.id === currentModel) {
+                opt.selected = true;
+            }
+            modelSelect.appendChild(opt);
+        });
+    }
+}
+
 // Initialize UI
 const welcomeApiAlert = document.getElementById('welcome-api-alert');
-if (modelSelect) {
-    modelSelect.value = selectedModel;
+if (providerSelect) {
+    providerSelect.value = selectedProvider;
+    providerSelect.addEventListener('change', (e) => {
+        renderProviderSettings(e.target.value);
+    });
 }
-if (openRouterApiKey) {
-    apiKeyInput.value = openRouterApiKey;
+renderProviderSettings(selectedProvider);
+
+if (getActiveApiKey()) {
     if (welcomeApiAlert) {
         welcomeApiAlert.style.display = 'none';
     }
@@ -292,7 +382,7 @@ async function initMCP() {
         statusDot.className = 'status-dot connected';
         statusText.textContent = `متصل بخادم التفسير (${mcpTools.length} أدوات بحث متوفرة)`;
         
-        if (openRouterApiKey) {
+        if (getActiveApiKey()) {
             userInput.disabled = false;
             sendBtn.disabled = false;
         }
@@ -305,27 +395,48 @@ async function initMCP() {
     }
 }
 
-// Call OpenRouter API
-async function callOpenRouter(requestMessages) {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+// Call AI Provider API (Google AI Studio or OpenRouter)
+async function callLLM(requestMessages) {
+    const provider = PROVIDERS[selectedProvider];
+    const apiKey = getActiveApiKey();
+    const model = getActiveModel();
+
+    if (!apiKey) {
+        throw new Error(`يرجى إدخال مفتاح الاتصال الخاص بـ ${provider.name} من الإعدادات.`);
+    }
+
+    const headers = {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
+    };
+
+    if (selectedProvider === 'openrouter') {
+        headers["HTTP-Referer"] = window.location.href;
+        headers["X-Title"] = "Fasserly Portal";
+    }
+
+    const payload = {
+        model: model,
+        messages: requestMessages,
+        tools: mcpTools.length > 0 ? mcpTools : undefined,
+        tool_choice: "auto"
+    };
+
+    const response = await fetch(provider.endpoint, {
         method: "POST",
-        headers: {
-            "Authorization": `Bearer ${openRouterApiKey}`,
-            "HTTP-Referer": window.location.href,
-            "X-Title": "Fasserly Portal",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            model: selectedModel,
-            messages: requestMessages,
-            tools: mcpTools.length > 0 ? mcpTools : undefined,
-            tool_choice: "auto"
-        })
+        headers: headers,
+        body: JSON.stringify(payload)
     });
 
     if (!response.ok) {
-        const err = await response.json();
-        throw new Error(err.error?.message || "OpenRouter API Error");
+        let errMsg = `${provider.name} API Error (${response.status})`;
+        try {
+            const err = await response.json();
+            errMsg = err.error?.message || err.message || JSON.stringify(err);
+        } catch (e) {
+            // failed to parse JSON error
+        }
+        throw new Error(errMsg);
     }
 
     return await response.json();
@@ -360,7 +471,7 @@ async function handleSend() {
     const text = userInput.value.trim();
     if (!text) return;
     
-    if (!openRouterApiKey) {
+    if (!getActiveApiKey()) {
         showToast('يرجى إدخال مفتاح الاتصال أولاً من الإعدادات!', 'error');
         openModal();
         return;
@@ -380,7 +491,7 @@ async function handleSend() {
         let isComplete = false;
         
         while (!isComplete) {
-            const data = await callOpenRouter(messages);
+            const data = await callLLM(messages);
             const messageObj = data.choices[0].message;
             
             messages.push(messageObj);
@@ -495,23 +606,35 @@ toggleApiKeyBtn.addEventListener('click', () => {
 
 // Save Settings Button
 saveBtn.addEventListener('click', () => {
-    openRouterApiKey = apiKeyInput.value.trim();
-    selectedModel = modelSelect.value;
+    const chosenProvider = providerSelect ? providerSelect.value : selectedProvider;
+    const inputKey = apiKeyInput.value.trim();
     
-    if (!openRouterApiKey) {
+    if (!inputKey) {
         showToast('يرجى إدخال مفتاح الاتصال أولاً!', 'error');
         return;
     }
     
-    localStorage.setItem('openRouterApiKey', openRouterApiKey);
-    localStorage.setItem('selectedModel', selectedModel);
+    selectedProvider = chosenProvider;
+    localStorage.setItem('fasserly_provider', selectedProvider);
+    
+    if (selectedProvider === 'google') {
+        googleApiKey = inputKey;
+        localStorage.setItem('googleApiKey', googleApiKey);
+        selectedGoogleModel = modelSelect.value;
+        localStorage.setItem('selectedGoogleModel', selectedGoogleModel);
+    } else {
+        openRouterApiKey = inputKey;
+        localStorage.setItem('openRouterApiKey', openRouterApiKey);
+        selectedOpenRouterModel = modelSelect.value;
+        localStorage.setItem('selectedOpenRouterModel', selectedOpenRouterModel);
+    }
     
     if (welcomeApiAlert) {
         welcomeApiAlert.style.display = 'none';
     }
     
     closeModal();
-    showToast('تم حفظ إعدادات الاتصال بنجاح.');
+    showToast(`تم حفظ إعدادات ${PROVIDERS[selectedProvider].name} بنجاح.`);
     
     if (!mcpClient) {
         initMCP();
@@ -571,6 +694,6 @@ userInput.addEventListener('input', function() {
 initMCP();
 
 // Auto-prompt API Key modal if not exists after slight delay
-if (!openRouterApiKey) {
+if (!getActiveApiKey()) {
     setTimeout(openModal, 800);
 }
